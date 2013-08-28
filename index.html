@@ -12,6 +12,7 @@
         <script src="lib/eagerLoad.jquery.js"></script>
         <script src="lib/debouncedEvents.jquery.js"></script>
         <script src="lib/jquery.touchSwipe.js"></script>
+        <script src="lib/jquery.transit.js"></script>
 
         <script src="flexGallery.jquery.js"></script>
 
@@ -68,8 +69,9 @@
 
             var intervalTime = 3000;
 
-            var setupButton = function() {
+            var setupButton = function(images) {
                 var gallery = this;
+                $(images).show();
 
                 $('button').click(function() { 
                     gallery.slides.next(); 
@@ -80,7 +82,25 @@
                 });
             };
 
-        var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton);
+        var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton, function(index,curr,next) {
+                $(curr).transition({
+                    opacity: 0,
+                    duration: 400,
+                    scale: 0.9
+                });
+
+                $(next).transition({
+                    scale: 0.9,
+                    duration: 0
+                });
+
+                $(next).transition({
+                    opacity: 1,
+                    duration: 800,
+                    scale: 1.0
+                });
+
+        });
         </script>
 
 	</body>

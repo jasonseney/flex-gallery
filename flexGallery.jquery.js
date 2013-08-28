@@ -93,7 +93,7 @@
                 "position":"absolute",
                 "top":"0",
                 "left":"0"
-            }).hide();
+            }).fadeTo(0,0);
 
             refreshView(images);
 
@@ -101,7 +101,7 @@
 
             obj.slides.goto(0);
 
-            onLoad.apply(obj);
+            onLoad.apply(obj, images);
             
         });
 
