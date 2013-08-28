@@ -83,17 +83,22 @@
         }
 
         // Setup
-        $.eagerLoad(imageUrls, function() {
-        }, function() {
+        $.eagerLoad(imageUrls, function() {}, function() {
             images = this;
 
             holder.append(images);
-            $(images).css("display","block");
-            $(images).css("position","absolute");
-            $(images).hide();
+
+            $(images).css({ 
+                "display":"block",
+                "position":"absolute",
+                "top":"0",
+                "left":"0"
+            }).hide();
+
             refreshView(images);
 
             obj.slides = new $.slidesModule(images, slideTime, function() {}, transition);
+
             obj.slides.goto(0);
 
             onLoad.apply(obj);
