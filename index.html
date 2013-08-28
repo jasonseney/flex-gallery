@@ -24,6 +24,11 @@
             height: 100%;
             background: #000;
         }
+        #container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
         button {
             display: block;
             position: absolute; 
@@ -43,6 +48,7 @@
             border-radius: 4px;
             cursor: pointer;
             outline: none;
+            z-index: 2;
         }
         button:hover {
             opacity: .7;
@@ -76,7 +82,7 @@
                 });
             };
 
-            var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton);
+        var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton);
         </script>
 
 	</body>

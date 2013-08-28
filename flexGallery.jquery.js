@@ -1,5 +1,5 @@
 (function($) {
-    $.flexGallery = function(holder, imageUrls, slideTime, onLoad) {
+    $.flexGallery = function(holder, imageUrls, slideTime, onLoad, transition) {
 
         var verifyDependency = function(func, name, level) {
             level = level || "warn";
@@ -26,22 +26,39 @@
 
             $(imgs).each(function() {
                 var imgH = $(this).height();
-                var imgAspect = $(this).width() / imgH;
+                var imgW = $(this).width();
+                var imgAspect = imgW / imgH
 
                 // Full height, centered horizontally
                 if(windowAspect > imgAspect && imgAspect > 0) {
+                    
+                    // Calculate the rendered width as it is stretched automatically
+                    // Use this for centering 
+                    var renderedW = Math.floor(windowH * imgAspect);
+
                     $(this).height(windowH);
-                    $(this).css("padding-top", 0);
-                    $(this).css("width","auto");
-                    $(this).css("margin", "0 auto");
+                    $(this).width("auto");
+                    $(this).css("top", 0);
+                    $(this).css("left", Math.floor(windowW/2 - renderedW/2));
                 }
                 // Full width, centered vertically
                 else if(windowAspect <= imgAspect) {
-                    $(this).css("width","100%");
+                    
+                    // Calculate the rendered height as it is stretched automatically
+                    // Use this for centering 
+                    var renderedH = Math.floor(windowW / imgAspect);
+
+                    $(this).css("width", windowW);
                     $(this).css("height", "auto");
-                    $(this).css("padding-top", Math.floor((windowH - windowW/imgAspect) / 2));
+                    $(this).css("left", "0");
+                    $(this).css("top", Math.floor(windowH/2 - renderedH/2));
                 }
             });
+        };
+
+        var transition = transition || function(index,curr,next) {
+            $(curr).fadeTo(400,0);
+            $(next).fadeTo(800,1);
         };
 
         // Resizing
@@ -72,10 +89,11 @@
 
             holder.append(images);
             $(images).css("display","block");
+            $(images).css("position","absolute");
             $(images).hide();
             refreshView(images);
 
-            obj.slides = new $.slidesModule(images, slideTime, function() {});
+            obj.slides = new $.slidesModule(images, slideTime, function() {}, transition);
             obj.slides.goto(0);
 
             onLoad.apply(obj);
