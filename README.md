@@ -18,19 +18,17 @@ Suggested
 
 ### Usage
 
-    var galleryInstance = $.flexGallery(containerElement,imageUrlArray, intervalTime, onLoadCallback);
+    var galleryInstance = $.flexGallery(containerElement,imageUrlArray, [intervalTime], [onLoadCallback],[transitionFunction]);
 
 *See the demo for full usage example*
 
 ##### Public API
 
-- `galleryInstance.slides`
-    - `galleryInstance.slides.prev()`
-    - `galleryInstance.slides.next()`
-    - `galleryInstance.slides.goto(index)`
-    - `galleryInstance.slides.timer`
-        - `galleryInstance.slides.timer.enable()`
-        - `galleryInstance.slides.timer.disable()`
+galleryInstance.slides.prev()
+galleryInstance.slides.next()
+galleryInstance.slides.goto(index)
+galleryInstance.slides.timer.enable()
+galleryInstance.slides.timer.disable()
 
 ### Notes
 
