@@ -69,10 +69,13 @@
             var intervalTime = 3000;
 
             var setupButton = function() {
-                $('button').html("NEXT &raquo;");
                 var gallery = this;
+
                 $('button').click(function() { 
                     gallery.slides.next(); 
+                }).html("NEXT &raquo;");
+
+                $('#container').click(function() {
                     gallery.slides.timer.disable(); 
                 });
             };
