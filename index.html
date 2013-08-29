@@ -85,9 +85,6 @@
         //var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton);
         var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton, function(currIndex,index,curr,next) {
 
-                console.log(currIndex);
-                console.log(index);
-
                 var movement = { 
                     out: currIndex < index ? "-=50px" : "+=50px",
                     in: currIndex < index ? "+=50px" : "-=50px"
