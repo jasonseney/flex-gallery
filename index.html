@@ -82,24 +82,43 @@
                 });
             };
 
-        var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton, function(index,curr,next) {
+        //var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton);
+        var myGallery = $.flexGallery($('#container'),galleryImages, intervalTime, setupButton, function(currIndex,index,curr,next) {
+
+                console.log(currIndex);
+                console.log(index);
+
+                var movement = { 
+                    out: currIndex < index ? "-=50px" : "+=50px",
+                    in: currIndex < index ? "+=50px" : "-=50px"
+                };
+
+                if(currIndex == index) {
+                    movement.in = "0";
+                    movement.out = "0";
+                }
+
                 $(curr).transition({
                     opacity: 0,
-                    duration: 400,
-                    scale: 0.9
+                    duration: 600,
+                    x: movement.out
+                });
+                $(curr).transition({
+                    duration: 0,
+                    x: 0
                 });
 
                 $(next).transition({
-                    scale: 0.9,
-                    duration: 0
+                    opacity: 0,
+                    duration: 0,
+                    x: movement.in
                 });
 
                 $(next).transition({
                     opacity: 1,
                     duration: 800,
-                    scale: 1.0
+                    x: 0
                 });
-
         });
         </script>
 
