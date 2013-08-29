@@ -1,4 +1,11 @@
 (function($) {
+    // Module for a flexible gallery
+    //
+    // @param holder The element to contain images and stretch to
+    // @param imageUrls A list of urls to images for slides
+    // @param slideTime The time between slides. 0 to disable timer
+    // @param onLoad A callback for when the gallery is loaded
+    // @param transition A function for tranistion between slides
     $.flexGallery = function(holder, imageUrls, slideTime, onLoad, transition) {
 
         var verifyDependency = function(func, name, level) {
@@ -56,9 +63,9 @@
             });
         };
 
-        var transition = transition || function(index,curr,next) {
-            $(curr).fadeTo(400,0);
-            $(next).fadeTo(800,1);
+        var transition = transition || function(currIndex,index,curr,next) {
+            $(curr).fadeTo(500,0.0);
+            $(next).fadeTo(500,1.0);
         };
 
         // Resizing
@@ -97,8 +104,7 @@
 
             refreshView(images);
 
-            obj.slides = new $.slidesModule(images, slideTime, function() {}, transition);
-
+            obj.slides = new $.slidesModule(images, slideTime, transition);
             obj.slides.goto(0);
 
             onLoad.apply(obj, images);
