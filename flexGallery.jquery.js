@@ -3,11 +3,25 @@
     //
     // @param holder The element to contain images and stretch to
     // @param imageUrls A list of urls to images for slides
-    // @param slideTime The time between slides. 0 to disable timer
-    // @param onLoad A callback for when the gallery is loaded
-    // @param transition A function for tranistion between slides
-    $.flexGallery = function(holder, imageUrls, slideTime, onLoad, transition) {
+    // @param options.mode The mode to display images. Either "contain" (default) or "cover".
+    // @param options.slideTime The time between slides. 0 to disable timer
+    // @param options.onLoad A callback for when the gallery is loaded
+    // @param options.transition A function for tranistion between slides
+    $.flexGallery = function(holder, imageUrls, userOptions) {
 
+        var options = {
+            mode: "contain",
+            slideTime: 0,
+            onLoad : function(){},
+            transition: function(currIndex,index,curr,next) {
+                $(curr).fadeTo(500,0.0);
+                $(next).fadeTo(500,1.0);
+            }
+        };
+
+        $.extend(options,userOptions);
+
+        // Helper to verify we have everything we need
         var verifyDependency = function(func, name, level) {
             level = level || "warn";
             if(!func) {
@@ -25,6 +39,7 @@
         var obj = this;
         var images = null;
 
+        // Handles resizing images based on the holder size
         var refreshView = function(imgs) {
 
             var windowH = $(holder).height();
@@ -63,13 +78,59 @@
             });
         };
 
-        var transition = transition || function(currIndex,index,curr,next) {
-            $(curr).fadeTo(500,0.0);
-            $(next).fadeTo(500,1.0);
+        var setupImages = {
+            "contain": function(urls,elements) {
+                images = elements;
+
+                $(holder).append(images);
+
+                $(images).css({ 
+                    "display":"block",
+                    "position":"absolute",
+                    "top":"0",
+                    "left":"0"
+                }).fadeTo(0,0);
+
+                refreshView(images);
+            },
+            "cover": function(urls,elements) {
+                images = $.map(urls, function(url,index) {
+                    return $("<div class='image-"+index+"' style='background-image: url("+url+");'></div>").get(0);
+                });
+
+                $(holder).append(images);
+
+                $(images).css({ 
+                    "background-position": "center",
+                    "background-size": "cover",
+                    "background-repeat": "no-repeat",
+                    "display":"block",
+                    "position":"absolute",
+                    "top":"0",
+                    "left":"0",
+                    "width": "100%",
+                    "height": "100%"
+                }).fadeTo(0,0);
+            }
         };
 
-        // Resizing
-        if(verifyDependency(jQuery.fn.debounceresize, "debouncedEvents.jquery.js")) {
+        // Setup
+        var setupGallery = function() {
+
+            $(holder).css("overflow","hidden");
+
+            setupImages[options.mode](imageUrls, this);
+
+            obj.slides = new $.slidesModule(images, options.slideTime, options.transition);
+            obj.slides.goto(0);
+
+            options.onLoad.apply(obj, images);
+        };
+
+        // ******** MAIN *********
+
+        // Refresh view on resizes
+        if(options.mode == "contain" && verifyDependency(jQuery.fn.debounceresize, "debouncedEvents.jquery.js")) {
             $(window).debounceresize(function() {
                 if(images) { refreshView(images); }
             });
@@ -77,7 +138,7 @@
 
         // Swipe Events
         if(verifyDependency(jQuery.fn.swipe, "jQuery.touchSwipe.js")) {
-            holder.swipe({
+            $(holder).swipe({
                 swipeLeft : function(event, direction, distance, duration, fingerCount) {
                     obj.slides.next();
                     obj.slides.timer.disable();
@@ -89,27 +150,8 @@
             });
         }
 
-        // Setup
-        $.eagerLoad(imageUrls, function() {}, function() {
-            images = this;
-
-            holder.append(images);
-
-            $(images).css({ 
-                "display":"block",
-                "position":"absolute",
-                "top":"0",
-                "left":"0"
-            }).fadeTo(0,0);
-
-            refreshView(images);
-
-            obj.slides = new $.slidesModule(images, slideTime, transition);
-            obj.slides.goto(0);
-
-            onLoad.apply(obj, images);
-            
-        });
+        // Preload all images then run setup
+        $.eagerLoad(imageUrls, function(){}, setupGallery);
 
         return obj;
     };
