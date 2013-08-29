@@ -101,7 +101,7 @@
                 var gallery = this;
 
                 $('#control').click(function() { 
-                    gallery.slides.next(); 
+                    gallery.slides.next({ trigger: "button"}); 
                 }).html("NEXT &raquo;");
 
                 $('#container').click(function() {
@@ -117,8 +117,9 @@
                     mode: mode,
                     slideTime: 3000,
                     onLoad: setupControl, 
-                    transition: function(currIndex,index,curr,next) {
-                        console.log(index);
+                    transition: function(currIndex,index,curr,next,options) {
+
+                        console.log(options);
 
                         var movement = { 
                             out: currIndex < index ? "-=50px" : "+=50px",

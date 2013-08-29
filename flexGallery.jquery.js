@@ -13,9 +13,9 @@
         var options = {
             mode: "contain",
             slideTime: 0,
-            startIndex: 0,
             onLoad : function(){},
-            transition: function(currIndex,index,curr,next) {
+            autoStart: true,
+            transition: function(currIndex, index, curr, next, transitionOptions) {
                 $(curr).fadeTo(500,0.0);
                 $(next).fadeTo(500,1.0);
             }
@@ -124,9 +124,12 @@
             setupImages[options.mode](imageUrls, this);
 
             obj.slides = new $.slidesModule(images, options.slideTime, options.transition);
-            obj.slides.goto(options.startIndex);
 
             options.onLoad.apply(obj, images);
+
+            if(options.autoStart) {
+                obj.slides.goto(0);
+            }
         };
 
         // ******** MAIN *********
@@ -142,10 +145,11 @@
         if(verifyDependency(jQuery.fn.swipe, "jQuery.touchSwipe.js")) {
             $(holder).swipe({
                 swipeLeft : function(event, direction, distance, duration, fingerCount) {
-                    obj.slides.next();
-                    obj.slides.timer.disable();
+                    obj.slides.next({trigger: "swipe"});
+                    obj.slides.timer.disable({trigger: "swipe"});
                 },
                 swipeRight : function(event, direction, distance, duration, fingerCount) {
+                    obj.slides.prev({trigger: "swipe"});
                     obj.slides.prev();
                     obj.slides.timer.disable();
                 }
