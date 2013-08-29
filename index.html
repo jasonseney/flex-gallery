@@ -118,6 +118,7 @@
                     slideTime: 3000,
                     onLoad: setupControl, 
                     transition: function(currIndex,index,curr,next) {
+                        console.log(index);
 
                         var movement = { 
                             out: currIndex < index ? "-=50px" : "+=50px",

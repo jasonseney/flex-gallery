@@ -1,4 +1,5 @@
 (function($) {
+    
     // Module for a flexible gallery
     //
     // @param holder The element to contain images and stretch to
@@ -12,6 +13,7 @@
         var options = {
             mode: "contain",
             slideTime: 0,
+            startIndex: 0,
             onLoad : function(){},
             transition: function(currIndex,index,curr,next) {
                 $(curr).fadeTo(500,0.0);
@@ -122,7 +124,7 @@
             setupImages[options.mode](imageUrls, this);
 
             obj.slides = new $.slidesModule(images, options.slideTime, options.transition);
-            obj.slides.goto(0);
+            obj.slides.goto(options.startIndex);
 
             options.onLoad.apply(obj, images);
         };
