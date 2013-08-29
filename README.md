@@ -42,18 +42,18 @@ Suggested
         Type: *Function*(*Array* images)  
         A callback function called after gallery loads. `this` is a reference to the gallery object. `images` is an array of the generated image slides.
     - **transition**  
-        Type: *Function*(*Number* currIndex, *Number* index, *Element* currItem, *Element* nextItem)  
-        A function to control to override how slides are transitioned. If overriding this option, the user will be responsible for showing/hiding/moving/manipulating both the current and next slide.
+        Type: *Function*(*Number* currIndex, *Number* index, *Element* currItem, *Element* nextItem, *Object* transitionOptions)  
+        A function to control to override how slides are transitioned. If overriding this option, the user will be responsible for showing/hiding/moving/manipulating both the current and next slide. `transitionOptions` are passed through from the `slides.goto` function.
 
 *See the demo for full usage example*
 
 ##### Public API
 
-    galleryInstance.slides.prev()
-    galleryInstance.slides.next()
-    galleryInstance.slides.goto(index)
-    galleryInstance.slides.timer.enable()
-    galleryInstance.slides.timer.disable()
+- galleryInstance.slides.prev(*Object* options)
+- galleryInstance.slides.next(*Object* options)
+- galleryInstance.slides.goto(*Number* index, *Object* options)
+- galleryInstance.slides.timer.enable()
+- galleryInstance.slides.timer.disable()
 
 ### Notes
 
