@@ -1,4 +1,5 @@
 (function($) {
+    
     // Module for a flexible gallery
     //
     // @param holder The element to contain images and stretch to
