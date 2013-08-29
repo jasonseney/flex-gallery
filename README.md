@@ -32,6 +32,9 @@ Suggested
     - **mode**   
         Type: *String* - "contain" (default) or "cover"  
         The mode in which to render each image inside the container. Setting to "contain" will position each image to stretch to the container size while preserving aspect ratio. Setting to "cover" will apply the image as a CSS background set to `background-position:cover` - cropping the image and filling the entire container.
+    - **startIndex**  
+        Type: *Number*
+        The index to start the slideshow on. Defaults to 0.
     - **slideTime**  
         Type: *Number*
         The time in milliseconds between slides. Set to false or 0 to disable (default).
